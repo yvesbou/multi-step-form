@@ -20,7 +20,7 @@ import formInitialValues from './FormModel/formInitialValues';
 
 import useStyles from './styles';
 
-const steps = ['Shipping address', 'Payment details', 'Review your order'];
+const steps = ['Specify Metadata', 'Upload Image to IPFS', 'Mint your NFT'];
 const { formId, formField } = checkoutFormModel;
 
 function _renderStepContent(step) {
@@ -71,7 +71,7 @@ export default function CheckoutPage() {
   return (
     <React.Fragment>
       <Typography component="h1" variant="h4" align="center">
-        Checkout
+        Mint your NFT
       </Typography>
       <Stepper activeStep={activeStep} className={classes.stepper}>
         {steps.map(label => (
