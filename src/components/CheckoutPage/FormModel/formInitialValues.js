@@ -12,5 +12,9 @@ export default {
   [nameOfNFT.name]: '',
   [description.name]: '',
   [blockchain.name]: '',
-  [image.name]: '',
+  [image.name]: {
+    file: null,
+    src: null,
+    name: ""
+  },
 };

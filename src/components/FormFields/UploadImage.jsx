@@ -10,7 +10,6 @@ import {
 } from '@material-ui/core';
 
 
-
 function UploadImage(props) {
     const { label, data, ...rest } = props;
     const [field, meta, helper] = useField(props);
@@ -35,11 +34,12 @@ function UploadImage(props) {
             <input
                 type="file"
                 hidden
-                value={uploadedImage}
+                {...field}
+                {...props}
                 onChange={(event) => {
                     const file = event.target.files[0];
                     console.log(file)
-                    setValue(file); //=> error: Failed to set the 'value' property on 'HTMLInputElement
+                    //setValue(file); //=> error: Failed to set the 'value' property on 'HTMLInputElement
                     //setFieldValue("uploadedImage", file);
                     // setFieldValue("image_type", file.type);
                     //handleFileUpload(event);

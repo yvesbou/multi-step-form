@@ -17,7 +17,6 @@ export default function PaymentForm(props) {
           <UploadImage
             name={image.name}
             label=""
-            fullWidth
           />
         </Grid>
         
