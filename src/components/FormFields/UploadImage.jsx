@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import { at } from 'lodash';
-import { useField } from 'formik';
+import { Field, useField } from 'formik';
 import {
   InputLabel,
   FormControl,
@@ -11,41 +11,60 @@ import {
 
 
 function UploadImage(props) {
-    const { label, data, ...rest } = props;
-    const [field, meta, helper] = useField(props);
-    const { setValue } = helper;
-    const { value: uploadedImage } = field;
-    const [touched, error] = at(meta, 'touched', 'error');
-    const isError = touched && error && true;
-    function _renderHelperText() {
-        if (isError) {
-        return <FormHelperText>{error}</FormHelperText>;
-        }
+  //const { ...rest } = props; // maybe leave that out
+
+  const { image } = props;
+  const [field, meta, helper] = useField(image.name);
+  const { touched, error } = meta;
+  const { setValue } = helper;
+  const isError = touched && error && true;
+  const { value } = field;
+  
+
+  const [fileName, setFileName] = useState(value.name);
+  const [file, setFile] = useState(value.file);
+  const [src, setSrc] = useState(value.src);
+
+  const _onChange = (e) => {
+    let reader = new FileReader();
+    let file = e.target.files[0];
+    if (file) {
+      reader.onloadend = () => setFileName(file.name);
+      if (file.name !== fileName) {
+        reader.readAsDataURL(file);
+        setSrc(reader);
+        setFile(file);
+      }
     }
+  };
+
+  function _renderHelperText() {
+    if (isError) {
+    return <FormHelperText>{error}</FormHelperText>;
+    }
+  }
+
+  
+    useEffect(() => {
+      if (file && fileName && src) {
+        setValue({ file: file, src: src, fileName: fileName });
+        console.log(fileName);
+        console.log(src)
+      }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [src, fileName, file]);
 
     return (
-    <FormControl {...rest} error={isError}>
-        <InputLabel>{label}</InputLabel>
-        <Button
-            variant="contained"
-            component="label"
-            >
-            Upload File
-            <input
-                type="file"
-                hidden
-                {...field}
-                {...props}
-                onChange={(event) => {
-                    const file = event.target.files[0];
-                    console.log(file)
-                    //setValue(file); //=> error: Failed to set the 'value' property on 'HTMLInputElement
-                    //setFieldValue("uploadedImage", file);
-                    // setFieldValue("image_type", file.type);
-                    //handleFileUpload(event);
-                }}
+    <FormControl error={isError}> 
+        <InputLabel>{image.label}</InputLabel>
+        <input
+              variant="outlined"
+              field={field}
+              type="file"
+              //component={UploadField}
+              onChange={_onChange}
+              
             />
-        </Button>
       {_renderHelperText()}
     </FormControl>
   );

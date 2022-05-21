@@ -9,6 +9,8 @@ const SUPPORTED_FORMATS = [
   "image/png"
 ];
 
+const FILE_SIZE = 10 * 1024 * 1024; // ~= 10 MB
+
 
 const {
   formField: {
@@ -32,9 +34,19 @@ export default [
     [image.name]: Yup.mixed()
         .required('You need an image.')
         .test(
+          "isEmpty",
+          `${image.requiredErrorMsg}`,
+          (value) => value && value.file
+        )
+        .test(
+          "fileSize",
+          "File too large",
+          (value) => value && value.file && value.file.size <= FILE_SIZE
+        )
+        .test(
           "fileFormat",
           "Unsupported Format",
-          value => value && SUPPORTED_FORMATS.includes(value)
+          value => value.file && SUPPORTED_FORMATS.includes(value.file.type)
       )
   })
   

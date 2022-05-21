@@ -15,8 +15,7 @@ export default function PaymentForm(props) {
       <Grid container spacing={3}>
         <Grid item xs={12} md={6}>
           <UploadImage
-            name={image.name}
-            label=""
+            image={image}
           />
         </Grid>
         

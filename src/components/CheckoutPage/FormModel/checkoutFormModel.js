@@ -19,6 +19,7 @@ export default {
     image: {
       name: 'image',
       label: 'Upload Image*',
+      type: 'image',
       requiredErrorMsg: 'Image is required',
       invalidErrorMsg: 'File type not valid'
     },
